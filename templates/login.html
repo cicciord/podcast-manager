@@ -1,0 +1,39 @@
+{% extends "base.html" %} {% block title %}New Series{% endblock %} {% block
+content%}
+<div class="container">
+  <main class="height-main">
+    <form
+      action="{{ url_for('login') }}"
+      method="POST"
+      class="mt-5 p-5 form-container mx-auto"
+    >
+      <div class="mb-3">
+        <label for="email" class="form-label">Email</label>
+        <input
+          type="email"
+          class="form-control"
+          name="email"
+          aria-describedby="user email"
+          placeholder="user@email.com"
+          required
+        />
+      </div>
+      <div class="mb-3">
+        <label for="password" class="form-label">Password</label>
+        <input
+          type="password"
+          class="form-control"
+          name="password"
+          aria-describedby="user password"
+          placeholder="password"
+          required
+        />
+      </div>
+      <button type="submit" class="btn btn-info mt-4">Log in</button>
+      <a href="{{ url_for('signup') }}" class="d-block mt-4 link-info"
+        >Sign up instead</a
+      >
+    </form>
+  </main>
+</div>
+{% endblock%}

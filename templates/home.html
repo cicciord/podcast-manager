@@ -1,0 +1,107 @@
+{% extends "base.html" %} {% block title %}Home{% endblock %} {% block content%}
+<div class="container-fluid">
+  <div class="row">
+    <aside class="col-lg-2 col-12 mt-4 mb-4 container text-center">
+      <div class="row">
+        <h3>Categories</h3>
+      </div>
+      <div class="row">
+        <nav class="navbar navbar-expand-lg">
+          <div class="container-fluid justify-content-center">
+            <div
+              class="collapse navbar-collapse justify-content-center"
+              id="navbarSupportedContent"
+            >
+              <ul class="navbar-nav mb-2 mb-lg-0 flex-column">
+                <li class="nav-item">
+                  <a
+                    class="nav-link {% if current_category == 'All' %}active nav-color-active{% endif %}"
+                    aria-current="page"
+                    href="{{ url_for('home') }}"
+                    >All</a
+                  >
+                </li>
+                {% for category in categories %}
+                <li class="nav-item">
+                  <a
+                    class="nav-link {% if current_category == category.category %}active nav-color-active{% else %}nav-color{% endif %}"
+                    href="{{ url_for('home_category', category=category.category) }}"
+                    >{{ category.category }}</a
+                  >
+                </li>
+                {% endfor %}
+              </ul>
+            </div>
+            <button
+              class="navbar-toggler"
+              type="button"
+              data-bs-toggle="collapse"
+              data-bs-target="#navbarSupportedContent"
+              aria-controls="navbarSupportedContent"
+              aria-expanded="false"
+              aria-label="Toggle navigation"
+            >
+              <span class="navbar-toggler-icon"></span>
+            </button>
+          </div>
+        </nav>
+      </div>
+    </aside>
+    <main class="col-10 container home-main">
+      <div class="row row-cols-1 row-cols-md-2 row-cols-xxl-4 g-4 mt-1 mb-4">
+        {% for series in series_list %}
+        <div class="col">
+          <article class="card">
+            <img
+              src="{{ url_for('static', filename='images/'+series.title.lower().replace(' ', '_')+'.jpeg') }}"
+              class="series-image card-img-top"
+              alt="series image"
+            />
+            <section class="card-body">
+              <h5 class="card-title">{{ series.title }}</h5>
+              <h6 class="card-subtitle mb-2 text-muted text-muted-series">
+                {{ series.category }}
+              </h6>
+              <p class="card-text">{{ series.text[:80]+'...' }}</p>
+              <a
+                href="{{ url_for('series', series_id=series.id) }}"
+                class="btn btn-info"
+                >Episodes</a
+              >
+              {% if current_user.is_authenticated %} {% if
+              is_following(current_user.id, series.id) %}
+              <a
+                href="{{ url_for('unfollow', series_id=series.id) }}"
+                class="btn btn-dark"
+                >Unfollow</a
+              >
+              {% else %}
+              <a
+                href="{{ url_for('follow', series_id=series.id) }}"
+                class="btn btn-info"
+                >Follow</a
+              >
+              {% endif %} {% endif %}
+            </section>
+            <footer
+              class="card-footer text-muted text-muted-series d-flex justify-content-between"
+            >
+              <p class="card-text">{{ series.date }}</p>
+              <p class="card-text">{{ get_creator_name(series.creator_id) }}</p>
+            </footer>
+          </article>
+        </div>
+        {% endfor %} {% if current_user.is_creator %}
+        <div class="col">
+          <article class="card">
+            <section class="card-body new-series-card">
+              <a href="{{ url_for('new_series') }}" class="new-series">+</a>
+            </section>
+          </article>
+        </div>
+        {% endif %}
+      </div>
+    </main>
+  </div>
+</div>
+{% endblock%}

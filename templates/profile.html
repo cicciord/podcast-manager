@@ -1,0 +1,49 @@
+{% extends "base.html" %} {% block title %}Home{% endblock %} {% block content%}
+<main class="col-10 container height-main">
+  <section class="mt-5 user-info">
+    <h1 class="mb-3 follow-title text-center">User Information</h1>
+    <ul class="list-group">
+      <li class="list-group-item list-group-item-light">
+        Username: <strong>{{ current_user.username }}</strong>
+      </li>
+      <li class="list-group-item list-group-item-light">
+        Email: <strong>{{ current_user.email }}</strong>
+      </li>
+      <li class="list-group-item list-group-item-light">
+        User type:
+        <strong
+          >{% if current_user.is_creator %}Creator{% else %}Listener{% endif
+          %}</strong
+        >
+      </li>
+    </ul>
+    <a
+      href="{{ url_for('logout') }}"
+      class="btn btn-danger mt-3 mb-3 logout-btn"
+      >Log out</a
+    >
+  </section>
+  <section class="">
+    <h1 class="mt-3 mb-3 follow-title text-center">Your Following</h1>
+    <div class="list-group">
+      {% for follow in follows %}
+      <a
+        href="{{ url_for('series', series_id=follow.series_id) }}"
+        class="list-group-item list-group-item-action list-group-item-info"
+      >
+        <div class="d-flex w-100 justify-content-between">
+          <h5 class="mb-1">{{ get_one_series(follow.series_id).title }}</h5>
+          <small>{{ get_one_series(follow.series_id).date }}</small>
+        </div>
+        <p class="mb-1">
+          {{ get_one_series(follow.series_id).text[:80]+'...' }}
+        </p>
+        <small
+          >{{ get_creator(get_one_series(follow.series_id).creator_id) }}</small
+        >
+      </a>
+      {% endfor %}
+    </div>
+  </section>
+</main>
+{% endblock%}

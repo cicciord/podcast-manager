@@ -1,0 +1,62 @@
+{% extends "base.html" %} {% block title %}New Series{% endblock %} {% block
+content%}
+<div class="container">
+  <main class="height-main">
+    <form
+      action="{{ url_for('signup') }}"
+      method="POST"
+      class="mt-5 p-5 form-container mx-auto"
+    >
+      <div class="mb-3">
+        <label for="username" class="form-label">Username</label>
+        <input
+          type="text"
+          class="form-control"
+          name="username"
+          aria-describedby="user username"
+          placeholder="username"
+          required
+          maxlength="20"
+        />
+      </div>
+      <div class="mb-3">
+        <label for="email" class="form-label">Email</label>
+        <input
+          type="email"
+          class="form-control"
+          name="email"
+          aria-describedby="user email"
+          placeholder="user@email.com"
+          required
+        />
+      </div>
+      <div class="mb-3">
+        <label for="password" class="form-label">Password</label>
+        <input
+          type="password"
+          class="form-control"
+          name="password"
+          aria-describedby="user password"
+          placeholder="password"
+          required
+          minlength="8"
+          maxlength="30"
+        />
+      </div>
+      <div class="mb-3 form-check">
+        <label class="form-check-label" for="is_creator">Creator</label>
+        <input
+          class="form-check-input"
+          type="checkbox"
+          value="is_creator"
+          name="is_creator"
+        />
+      </div>
+      <button type="submit" class="btn btn-info mt-4">Sign up</button>
+      <a href="{{ url_for('login') }}" class="d-block mt-4 link-info"
+        >Log in instead</a
+      >
+    </form>
+  </main>
+</div>
+{% endblock%}

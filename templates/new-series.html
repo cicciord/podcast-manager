@@ -1,0 +1,72 @@
+{% extends "base.html" %} {% block title %}New Series{% endblock %} {% block
+content%}
+<div class="container">
+  <main class="height-main">
+    <form
+      action="{{ url_for('new_series') }}"
+      method="POST"
+      class="mt-5 p-5 form-container mx-auto"
+      enctype="multipart/form-data"
+    >
+      <div class="mb-3">
+        <label for="title" class="form-label">Title</label>
+        <input
+          type="text"
+          class="form-control"
+          name="title"
+          aria-describedby="series title"
+          placeholder="Title"
+          required
+          minlength="3"
+          maxlength="30"
+        />
+      </div>
+      <div class="mb-3">
+        <label for="category" class="form-label">Category</label>
+        <input
+          type="text"
+          class="form-control"
+          name="category"
+          aria-describedby="series category"
+          placeholder="Category"
+          required
+          minlength="3"
+          maxlength="20"
+        />
+      </div>
+      <div class="mb-3">
+        <label for="date" class="form-label">Creation Date</label>
+        <input
+          type="date"
+          class="form-control"
+          name="date"
+          aria-describedby="series title"
+        />
+      </div>
+      <div class="mb-3">
+        <label for="image" class="form-label">Series Image</label>
+        <input
+          type="file"
+          class="form-control"
+          name="image"
+          aria-describedby="series image"
+          accept="image/jpeg, image/jpg"
+          required
+        />
+      </div>
+      <div class="mb-3">
+        <label for="text" class="form-label">Description</label>
+        <textarea
+          class="form-control"
+          name="text"
+          rows="3"
+          required
+          minlength="100"
+          maxlength="400"
+        ></textarea>
+      </div>
+      <button type="submit" class="btn btn-info mt-4">Save</button>
+    </form>
+  </main>
+</div>
+{% endblock%}
