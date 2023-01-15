@@ -61,7 +61,20 @@ def get_podcasts(series_id, creator_id):
 
     return res
 
-print(get_podcasts(2, 1))
+def get_podcasts_titles(series_id):
+    conn = sqlite3.connect("db/series.db")
+    conn.row_factory = sqlite3.Row
+    cursor = conn.cursor()
+
+    sql = "SELECT title FROM podcasts WHERE series_id = ?"
+    cursor.execute(sql, (series_id, ))
+
+    res = cursor.fetchall()
+
+    cursor.close()
+    conn.close()
+
+    return res
 
 def get_podcast(podcast_id):
     conn = sqlite3.connect("db/series.db")

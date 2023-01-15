@@ -32,14 +32,15 @@
         class="list-group-item list-group-item-action list-group-item-info"
       >
         <div class="d-flex w-100 justify-content-between">
-          <h5 class="mb-1">{{ get_one_series(follow.series_id).title }}</h5>
-          <small>{{ get_one_series(follow.series_id).date }}</small>
+          <h5 class="mb-1">{{ get_series_by_id(follow.series_id).title }}</h5>
+          <small>{{ get_series_by_id(follow.series_id).date }}</small>
         </div>
         <p class="mb-1">
-          {{ get_one_series(follow.series_id).text[:80]+'...' }}
+          {{ get_series_by_id(follow.series_id).text[:150]+'...' }}
         </p>
         <small
-          >{{ get_creator(get_one_series(follow.series_id).creator_id) }}</small
+          >{{ get_creator(get_series_by_id(follow.series_id).creator_id)
+          }}</small
         >
       </a>
       {% endfor %}

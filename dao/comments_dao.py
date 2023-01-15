@@ -7,18 +7,23 @@ def post_comment(comment):
     conn.row_factory = sqlite3.Row
     cursor = conn.cursor()
 
-    sql = "INSERT INTO comments(comment, date, user_id, podcast_id) VALUES(?, ?, ?, ?)"
-    
-    try:
-        cursor.execute(sql, (comment["comment"], comment["date"], comment["user_id"], comment["podcast_id"]))
-        conn.commit()
-        success = True
-    except Exception as e:
-        print("ERROR", e)
-        conn.rollback()
+    sql = "SELECT date FROM podcasts WHERE id = ? AND date <= ?"
+    cursor.execute(sql, (comment["podcast_id"], comment["date"]))
+    allowed = cursor.fetchone()
 
-    cursor.close()
-    conn.close()
+    if allowed:    
+        sql = "INSERT INTO comments(comment, date, user_id, podcast_id) VALUES(?, ?, ?, ?)"
+        
+        try:
+            cursor.execute(sql, (comment["comment"], comment["date"], comment["user_id"], comment["podcast_id"]))
+            conn.commit()
+            success = True
+        except Exception as e:
+            print("ERROR", e)
+            conn.rollback()
+
+        cursor.close()
+        conn.close()
 
     return success
 

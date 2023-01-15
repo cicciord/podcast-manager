@@ -16,6 +16,21 @@ def get_series(creator_id):
     conn.close()
     return res
 
+def get_series_titles():
+    conn = sqlite3.connect("db/series.db")
+    conn.row_factory = sqlite3.Row
+    cursor = conn.cursor()
+
+    sql = "SELECT title FROM series"
+    curr_date = date.today()
+    cursor.execute(sql)
+
+    res = cursor.fetchall()
+
+    cursor.close()
+    conn.close()
+    return res
+
 def get_series_by_category(category):
     conn = sqlite3.connect("db/series.db")
     conn.row_factory = sqlite3.Row
@@ -46,7 +61,7 @@ def get_categories():
     conn.close()
     return res
 
-def get_one_series(id):
+def get_series_by_id(id):
     conn = sqlite3.connect("db/series.db")
     conn.row_factory = sqlite3.Row
     cursor = conn.cursor()

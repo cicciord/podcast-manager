@@ -133,6 +133,7 @@ block content%}
               class="form-control"
               name="date"
               aria-describedby="series title"
+              value="{{ series.date }}"
             />
           </div>
           <div class="mb-3">
@@ -254,7 +255,7 @@ block content%}
       <div class="mb-3 d-flex justify-content-between align-items-center">
         <audio controls>
           <source
-            src="{{ url_for('static', filename='audio/'+podcast.title.lower().replace(' ', '_')+'.mp3') }}"
+            src="{{ url_for('static', filename='audio/'+str(podcast.series_id)+'/'+podcast.title.lower().replace(' ', '_')+'.mp3') }}"
             type="audio/mpeg"
           />
         </audio>
