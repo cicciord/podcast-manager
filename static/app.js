@@ -4,6 +4,7 @@ const searchTab = document.querySelector(".search-tab");
 const podcastsEl = document.querySelectorAll("[data-podcast]");
 
 searchTab.addEventListener("input", (e) => {
+  e.preventDefault();
   const value = e.target.value;
   podcastsEl.forEach((podcastEl) => {
     const podcastTitle = podcastEl.querySelector(

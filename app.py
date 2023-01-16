@@ -35,7 +35,6 @@ def home_category(category):
 @app.route('/series/<int:series_id>')
 def series(series_id):
     series_selected = series_dao.get_series_by_id(series_id)
-
     if not series_selected:
         flash("Series do not exist...", "danger")
         return redirect(url_for("home"))
@@ -155,55 +154,54 @@ def edit_series(series_id):
     # form validation - if field not present use pre-existing data
     if add_series["title"] == "":
         add_series["title"] = series_edit["title"]
+    else:
+        titles = series_dao.get_series_titles()
+        for title in titles:
+            if title["title"].lower() == add_series["title"].lower():
+                flash("This title has already been used, please choose a different one...", "warning")
+                return redirect(request.referrer)
 
-    titles = series_dao.get_series_titles()
-    for title in titles:
-        if title["title"].lower() == add_series["title"].lower():
-            flash("This title has already been used, please choose a different one...", "warning")
-            return redirect(request.referrer)
+        if len(add_series["title"]) < 3:
+            flash("Title is too short...", "warning")
+            return redirect(url_for("series", series_id=series_id))
+        
+        if add_series["title"][0] == " ":
+            flash("Title cannot start with an empty space...", "warning")
+            return redirect(url_for("series", series_id=series_id))
 
-    if len(add_series["title"]) < 3:
-        flash("Title is too short...", "warning")
-        return redirect(url_for("series", series_id=series_id))
-    
-    if add_series["title"][0] == " ":
-        flash("Title cannot start with an empty space...", "warning")
-        return redirect(url_for("series", series_id=series_id))
-
-
-    if len(add_series["title"]) > 30:
-        flash("Title is too long...", "warning")
-        return redirect(url_for("series", series_id=series_id))
+        if len(add_series["title"]) > 30:
+            flash("Title is too long...", "warning")
+            return redirect(url_for("series", series_id=series_id))
     
     if add_series["category"] == "":
         add_series["category"] = series_edit["category"]
+    else:
+        if len(add_series["category"]) < 3:
+            flash("Category is too short...", "warning")
+            return redirect(url_for("series", series_id=series_id))
+        
+        if add_series["category"][0] == " ":
+            flash("Category cannot start with an empty space...", "warning")
+            return redirect(url_for("series", series_id=series_id))
 
-    if len(add_series["category"]) < 3:
-        flash("Category is too short...", "warning")
-        return redirect(url_for("series", series_id=series_id))
-    
-    if add_series["category"][0] == " ":
-        flash("Category cannot start with an empty space...", "warning")
-        return redirect(url_for("series", series_id=series_id))
-
-    if len(add_series["category"]) > 20:
-        flash("Category is too long...", "warning")
-        return redirect(url_for("series", series_id=series_id))
+        if len(add_series["category"]) > 20:
+            flash("Category is too long...", "warning")
+            return redirect(url_for("series", series_id=series_id))
 
     if add_series["text"] == "":
         add_series["text"] = series_edit["text"]
+    else:
+        if len(add_series["text"]) < 100:
+            flash("Description is too short...", "warning")
+            return redirect(url_for("series", series_id=series_id))
+        
+        if add_series["text"][0] == " ":
+            flash("Description cannot start with an empty space...", "warning")
+            return redirect(url_for("series", series_id=series_id))
 
-    if len(add_series["text"]) < 100:
-        flash("Description is too short...", "warning")
-        return redirect(url_for("series", series_id=series_id))
-    
-    if add_series["text"][0] == " ":
-        flash("Description cannot start with an empty space...", "warning")
-        return redirect(url_for("series", series_id=series_id))
-
-    if len(add_series["text"]) > 400:
-        flash("Description is too long...", "warning")
-        return redirect(url_for("series", series_id=series_id))
+        if len(add_series["text"]) > 400:
+            flash("Description is too long...", "warning")
+            return redirect(url_for("series", series_id=series_id))
 
     if add_series["date"] == "":
         add_series["date"] = series_edit["date"]
@@ -225,7 +223,7 @@ def edit_series(series_id):
         else:
             image.save("static/images/" + add_series["title"].lower().replace(" ", "_") + ".jpeg")
             os.remove("static/images/" + series_edit["title"].lower().replace(" ", "_") + ".jpeg")
-        flash("Series successfully created!", "success")
+        flash("Series successfully updated!", "success")
     else:
         flash("Something went wrong!", "danger")
     
@@ -355,33 +353,33 @@ def edit_podcast(podcast_id):
     # validate form
     if add_podcast["title"] == "":
         add_podcast["title"] = podcast_edit["title"]
+    else:
+        if len(add_podcast["title"]) < 3:
+            flash("Title is too short...", "warning")
+            return redirect(url_for("series", series_id=series_id))
+        
+        if add_podcast["title"][0] == " ":
+            flash("Title cannot start with an empty space...", "warning")
+            return redirect(url_for("series", series_id=series_id))
 
-    if len(add_podcast["title"]) < 3:
-        flash("Title is too short...", "warning")
-        return redirect(url_for("series", series_id=series_id))
-    
-    if add_podcast["title"][0] == " ":
-        flash("Title cannot start with an empty space...", "warning")
-        return redirect(url_for("series", series_id=series_id))
-
-    if len(add_podcast["title"]) > 30:
-        flash("Title is too long...", "warning")
-        return redirect(url_for("series", series_id=series_id))
+        if len(add_podcast["title"]) > 30:
+            flash("Title is too long...", "warning")
+            return redirect(url_for("series", series_id=series_id))
 
     if add_podcast["description"] == "":
         add_podcast["description"] = podcast_edit["description"]
+    else:
+        if len(add_podcast["description"]) < 30:
+            flash("Description is too short...", "warning")
+            return redirect(url_for("series", series_id=series_id))
+        
+        if add_podcast["description"][0] == " ":
+            flash("Description cannot start with an empty space...", "warning")
+            return redirect(url_for("series", series_id=series_id))
 
-    if len(add_podcast["description"]) < 30:
-        flash("Description is too short...", "warning")
-        return redirect(url_for("series", series_id=series_id))
-    
-    if add_podcast["description"][0] == " ":
-        flash("Description cannot start with an empty space...", "warning")
-        return redirect(url_for("series", series_id=series_id))
-
-    if len(add_podcast["description"]) > 150:
-        flash("Description is too long...", "warning")
-        return redirect(url_for("series", series_id=series_id))
+        if len(add_podcast["description"]) > 150:
+            flash("Description is too long...", "warning")
+            return redirect(url_for("series", series_id=series_id))
 
     # handle date
     if add_podcast["date"] == "":
@@ -404,7 +402,7 @@ def edit_podcast(podcast_id):
         else:
             audio.save("static/audio/" + add_podcast["title"].lower().replace(" ", "_") + ".mp3")
             os.remove("static/audio/" + series_pod["id"] + "/" + podcast_edit["title"].lower().replace(" ", "_") + ".mp3")
-        flash("Podcast successfully added!", "success")
+        flash("Podcast successfully updated!", "success")
     else:
         flash("Something went wrong!", "danger")
     

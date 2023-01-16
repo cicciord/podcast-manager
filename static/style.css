@@ -186,10 +186,20 @@ main {
   width: 20rem;
 }
 
+@media (max-width: 1400px) {
+  .series-img-bg {
+    height: 22rem;
+  }
+}
+
 @media (max-width: 992px) {
   .home-main {
     border-left: 0;
     border-top: 5px solid #00506a;
+  }
+
+  .series-img-bg {
+    height: 24rem;
   }
 }
 
@@ -200,5 +210,15 @@ main {
 
   .header-container {
     justify-content: space-around;
+  }
+
+  .series-img-bg {
+    height: 34rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .series-img-bg {
+    height: 38rem;
   }
 }
