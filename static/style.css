@@ -222,3 +222,9 @@ main {
     height: 38rem;
   }
 }
+
+@media (max-width: 500px) {
+  .series-img-bg {
+    height: 40rem;
+  }
+}

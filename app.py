@@ -398,9 +398,9 @@ def edit_podcast(podcast_id):
 
     if success:
         if audio.filename == "":
-            os.rename("static/audio/" + str(series_pod["id"]) + "/" + podcast_edit["title"].lower().replace(" ", "_") + ".mp3", "static/audio/" + add_podcast["title"].lower().replace(" ", "_") + ".mp3")
+            os.rename("static/audio/" + str(series_pod["id"]) + "/" + podcast_edit["title"].lower().replace(" ", "_") + ".mp3", "static/audio/" + str(series_pod["id"]) + "/" + add_podcast["title"].lower().replace(" ", "_") + ".mp3")
         else:
-            audio.save("static/audio/" + add_podcast["title"].lower().replace(" ", "_") + ".mp3")
+            audio.save("static/audio/" + str(series_pod["id"]) + "/" + add_podcast["title"].lower().replace(" ", "_") + ".mp3")
             os.remove("static/audio/" + series_pod["id"] + "/" + podcast_edit["title"].lower().replace(" ", "_") + ".mp3")
         flash("Podcast successfully updated!", "success")
     else:
