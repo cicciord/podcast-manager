@@ -1,6 +1,7 @@
 {% extends "base.html" %} {% block title %}Home{% endblock %} {% block content%}
 <div class="container-fluid">
   <div class="row">
+    <!-- sidebar containing navigation by categories -->
     <aside class="col-lg-2 col-12 mt-4 mb-4 container text-center">
       <div class="row">
         <h3>Categories</h3>
@@ -18,6 +19,7 @@
                     class="nav-link {% if current_category == 'All' %}active nav-color-active{% endif %}"
                     aria-current="page"
                     href="{{ url_for('home') }}"
+                    title="select all category"
                     >All</a
                   >
                 </li>
@@ -26,6 +28,7 @@
                   <a
                     class="nav-link {% if current_category == category.category %}active nav-color-active{% else %}nav-color{% endif %}"
                     href="{{ url_for('home_category', category=category.category) }}"
+                    title="select category {{ category.category }}"
                     >{{ category.category }}</a
                   >
                 </li>
@@ -47,6 +50,8 @@
         </nav>
       </div>
     </aside>
+    <!-- sidebar -->
+    <!-- main section -->
     <main class="col-10 container home-main">
       <div class="row row-cols-1 row-cols-md-2 row-cols-xxl-4 g-4 mt-1 mb-4">
         {% for series in series_list %}
@@ -66,6 +71,7 @@
               <a
                 href="{{ url_for('series', series_id=series.id) }}"
                 class="btn btn-info"
+                title="series page"
                 >Episodes</a
               >
               {% if current_user.is_authenticated %} {% if
@@ -73,12 +79,14 @@
               <a
                 href="{{ url_for('unfollow', series_id=series.id) }}"
                 class="btn btn-dark"
+                title="unfollow series"
                 >Unfollow</a
               >
               {% else %}
               <a
                 href="{{ url_for('follow', series_id=series.id) }}"
                 class="btn btn-info"
+                title="follow series"
                 >Follow</a
               >
               {% endif %} {% endif %}
@@ -95,7 +103,12 @@
         <div class="col">
           <article class="card">
             <section class="card-body new-series-card">
-              <a href="{{ url_for('new_series') }}" class="new-series">+</a>
+              <a
+                href="{{ url_for('new_series') }}"
+                class="new-series"
+                title="add new series"
+                >+</a
+              >
             </section>
           </article>
         </div>

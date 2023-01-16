@@ -1,5 +1,6 @@
 {% extends "base.html" %} {% block title %}{{ series.title }}{% endblock %} {%
 block content%}
+<!-- modal form to create a new podcast -->
 <section class="modal" tabindex="-1" id="modal-form">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -26,7 +27,7 @@ block content%}
               type="text"
               class="form-control"
               name="title"
-              aria-describedby="series title"
+              aria-describedby="podcast title"
               placeholder="Title"
               required
               minlength="3"
@@ -39,7 +40,7 @@ block content%}
               type="date"
               class="form-control"
               name="date"
-              aria-describedby="series title"
+              aria-describedby="podcast creation date"
             />
           </div>
           <div class="mb-3">
@@ -48,7 +49,7 @@ block content%}
               type="file"
               class="form-control"
               name="audio"
-              aria-describedby="podcast audio"
+              aria-describedby="podcast audio file"
               accept="audio/mp3"
               required
             />
@@ -82,6 +83,8 @@ block content%}
     </div>
   </div>
 </section>
+
+<!-- modal form to edit current series -->
 <section class="modal" tabindex="-1" id="modal-series">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -132,7 +135,7 @@ block content%}
               type="date"
               class="form-control"
               name="date"
-              aria-describedby="series title"
+              aria-describedby="series creation date"
               value="{{ series.date }}"
             />
           </div>
@@ -199,12 +202,14 @@ block content%}
         <a
           href="{{ url_for('unfollow', series_id=series.id) }}"
           class="btn btn-dark"
+          title="unfollow series"
           >Unfollow</a
         >
         {% else %}
         <a
           href="{{ url_for('follow', series_id=series.id) }}"
           class="btn btn-outline-light"
+          title="follow series"
           >Follow</a
         >
         {% endif %} {% if current_user.id == series.creator_id %}
@@ -213,17 +218,21 @@ block content%}
           class="btn btn-outline-light"
           data-bs-toggle="modal"
           data-bs-target="#modal-series"
+          title="edit series info"
           >Edit</a
         >
         <a
           href="{{ url_for('delete_series', series_id=series.id) }}"
           class="btn btn-outline-danger"
+          title="delete series"
           >Delete</a
         >
         {% endif %} {% endif %}
       </section>
     </article>
   </div>
+
+  <!-- search bar -->
   {% if podcasts | length != 0 %}
   <nav class="navbar search-nav my-2 mx-auto">
     <div class="container-fluid">
@@ -236,6 +245,8 @@ block content%}
     </div>
   </nav>
   {% endif %}
+
+  <!-- podcasts list -->
   <article class="list-group">
     {% if podcasts | length == 0 %}
     <section class="list-group-item list-group-item-light">
@@ -266,11 +277,13 @@ block content%}
             class="btn btn-outline-secondary"
             data-bs-toggle="modal"
             data-bs-target="#modal-edit-form-{{ podcast.id }}"
+            title="edit podcast info"
             >Edit</a
           >
           <a
             href="{{ url_for('delete_podcast', podcast_id=podcast.id) }}"
             class="btn btn-outline-secondary"
+            title="delete podcast"
             >X</a
           >
         </div>
@@ -282,10 +295,13 @@ block content%}
         class=""
         data-bs-toggle="modal"
         data-bs-target="#modal-comments-{{ podcast.id }}"
+        title="open comments section"
       >
         Comments
       </a>
     </section>
+
+    <!-- modal form to edit podcast -->
     <section class="modal" tabindex="-1" id="modal-edit-form-{{ podcast.id }}">
       <div class="modal-dialog">
         <div class="modal-content">
@@ -334,7 +350,7 @@ block content%}
                   type="file"
                   class="form-control"
                   name="audio"
-                  aria-describedby="podcast audio"
+                  aria-describedby="podcast audio file"
                   accept="audio/mp3"
                 />
               </div>
@@ -371,6 +387,8 @@ block content%}
         </div>
       </div>
     </section>
+
+    <!-- comments modal -->
     <section class="modal" tabindex="-1" id="modal-comments-{{ podcast.id }}">
       <div class="modal-dialog modal-dialog-scrollable">
         <div class="modal-content">
@@ -399,6 +417,7 @@ block content%}
                 <a
                   href="{{ url_for('delete_comment', comment_id=comment.id) }}"
                   class="link-danger d-block"
+                  title="delete comment"
                   >delete</a
                 >
                 {% endif %}
@@ -472,6 +491,7 @@ block content%}
       class="list-group-item list-group-item-action list-group-item-light new-podcast"
       data-bs-toggle="modal"
       data-bs-target="#modal-form"
+      title="add podcast"
     >
       +
     </a>

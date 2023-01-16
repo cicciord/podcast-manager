@@ -492,7 +492,7 @@ def new_comment(podcast_id):
         flash("Comment cannot start with an empty space...", "warning")
         return redirect(url_for(request.referrer))
 
-    if len(comment["comment"]) > 100:
+    if len(comment["comment"]) > 300:
         flash("Comment is too long...", "warning")
         return redirect(request.referrer)
 

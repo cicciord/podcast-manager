@@ -1,4 +1,4 @@
-{% extends "base.html" %} {% block title %}New Series{% endblock %} {% block
+{% extends "base.html" %} {% block title %}Sign up{% endblock %} {% block
 content%}
 <div class="container">
   <main class="height-main">
@@ -53,7 +53,10 @@ content%}
         />
       </div>
       <button type="submit" class="btn btn-info mt-4">Sign up</button>
-      <a href="{{ url_for('login') }}" class="d-block mt-4 link-info"
+      <a
+        href="{{ url_for('login') }}"
+        class="d-block mt-4 link-info"
+        title="login"
         >Log in instead</a
       >
     </form>

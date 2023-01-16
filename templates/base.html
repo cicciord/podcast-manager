@@ -20,18 +20,18 @@
   <body>
     <header>
       <div class="container-fluid mx-5 header-container">
-        <a href="{{ url_for('home') }}">
+        <a href="{{ url_for('home') }}" title="homepage">
           <img
             src="{{ url_for('static', filename='images/logo.svg') }}"
             alt="logo"
             class="logo-img"
           />
         </a>
-        <a href="{{ url_for('home') }}">
+        <a href="{{ url_for('home') }}" title="homepage">
           <h1>Podcast Manager</h1>
         </a>
         {% if current_user.is_authenticated %}
-        <a href="{{ url_for('profile') }}">
+        <a href="{{ url_for('profile') }}" title="profile">
           <img
             src="{{ url_for('static', filename='images/user-icon.svg') }}"
             alt="login-icon"
@@ -39,7 +39,7 @@
           />
         </a>
         {% else %}
-        <a href="{{ url_for('login') }}">
+        <a href="{{ url_for('login') }}" title="login">
           <img
             src="{{ url_for('static', filename='images/login-icon.svg') }}"
             alt="user-icon"
