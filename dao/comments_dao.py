@@ -27,6 +27,28 @@ def post_comment(comment):
 
     return success
 
+def update_comment(comment):
+    success = False
+
+    conn = sqlite3.connect("db/series.db")
+    conn.row_factory = sqlite3.Row
+    cursor = conn.cursor()
+
+    sql = "UPDATE comments SET comment=?, date=? WHERE id=?"
+        
+    try:
+        cursor.execute(sql, (comment["comment"], comment["date"], comment["id"]))
+        conn.commit()
+        success = True
+    except Exception as e:
+        print("ERROR", e)
+        conn.rollback()
+
+        cursor.close()
+        conn.close()
+
+    return success
+
 def get_comments(podcast_id):
     conn = sqlite3.connect("db/series.db")
     conn.row_factory = sqlite3.Row

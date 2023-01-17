@@ -509,6 +509,46 @@ def new_comment(podcast_id):
     
     return redirect(request.referrer)
 
+@app.route("/podcast/comments/<int:comment_id>/edit", methods=["POST"])
+@login_required
+def edit_comment(comment_id):
+    comment = request.form.to_dict()
+    edit_comment = comments_dao.get_comment(comment_id)
+
+    # check user is comment creator
+    if current_user.id != edit_comment["user_id"]:
+        flash("Only creator of the comment can edit it...", "danger")
+        return redirect(request.referrer)
+
+    # form validation
+    if comment["comment"] == "":
+        comment["comment"] = edit_comment["comment"]
+    else:
+        if len(comment["comment"]) < 3:
+            flash("Comment is too short...", "warning")
+            return redirect(request.referrer)
+        
+        if comment["comment"][0] == " ":
+            flash("Comment cannot start with an empty space...", "warning")
+            return redirect(url_for(request.referrer))
+
+        if len(comment["comment"]) > 300:
+            flash("Comment is too long...", "warning")
+            return redirect(request.referrer)
+
+    # handle date
+    comment["date"] = date.today()
+
+    comment["id"] = comment_id
+    comment["podcast_id"] = edit_comment["podcast_id"]
+
+    success = comments_dao.update_comment(comment)
+
+    if not success:
+        flash("Something went wrong!", "danger")
+    
+    return redirect(request.referrer)
+
 @app.route("/podcast/<int:comment_id>/del_comment")
 @login_required
 def delete_comment(comment_id):

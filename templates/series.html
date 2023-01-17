@@ -412,14 +412,41 @@ block content%}
                   <p class="mb-1">{{ get_creator_name(comment.user_id) }}</p>
                   <small>{{ comment.date }}</small>
                 </div>
-                <small>{{ comment.comment }}</small>
                 {% if comment.user_id == current_user.id %}
+                <form
+                  id="comments-form-edit-{{ podcast.id }}"
+                  action="{{ url_for('edit_comment', comment_id=comment.id) }}"
+                  method="POST"
+                  class="mx-auto"
+                >
+                  <div class="mb-3">
+                    <textarea
+                      class="form-control"
+                      name="comment"
+                      aria-describedby="podcast comment"
+                      required
+                      minlength="3"
+                      maxlength="300"
+                    >
+{{ comment.comment }}</textarea
+                    >
+                  </div>
+                </form>
+                <button
+                  class="btn btn-outline-primary me-2"
+                  title="edit comment"
+                  form="comments-form-edit-{{ podcast.id }}"
+                >
+                  edit
+                </button>
                 <a
                   href="{{ url_for('delete_comment', comment_id=comment.id) }}"
-                  class="link-danger d-block"
+                  class="btn btn-outline-danger"
                   title="delete comment"
                   >delete</a
                 >
+                {% else %}
+                <small>{{ comment.comment }}</small>
                 {% endif %}
               </section>
               {% endfor %}
