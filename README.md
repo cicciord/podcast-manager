@@ -10,12 +10,36 @@ Questa applicazione web è stata sviluppata per essere eseguita su desktop. Sar�
 
 ## Pre-requisiti
 
-Per eseguire questa repository è necessario avere installato sul dispositivo `Python 3.10.2` (versioni precedenti potrebbero funzionare ugualmente)
+Per il corretto funzionamento di questa repository è necessario avere installato sul dispositivo `Python 3.10.2` o superiore (versioni precedenti potrebbero funzionare ugualmente)
+
+Per seguire le istruzioni successive è necessario eseguire i comandi elencati da terminale.
+Assicuratevi di essere nella directory del progetto
+
+## Virtual enviroment
+
+Per iniziare creare un virtual enviroment di python. Per farlo è necessario eseguire il comando
+
+```
+python3 -m venv venv
+```
+
+Dopo che la cartella `venv` è stata creata nella repository eseguire il seguente comando per attivare il virtual enviroment
+
+```
+. venv/bin/activate
+```
+
+## Intallare le dipendenze
+
+Assicurarsi che il file `requirements.txt` è presente nella repository ed eseguire
+
+```
+pip install -r requirements.txt
+```
 
 ## Server
 
-Per avviare il server è necessario eseguire il seguente comando da terminale.
-Assicuratevi di essere nella directory del progetto prima di eseguire il comando
+Per avviare il server è necessario eseguire il seguente comando
 
 ```
 flask run
