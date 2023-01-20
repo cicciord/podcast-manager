@@ -45,7 +45,7 @@ Per avviare il server è necessario eseguire il seguente comando
 flask run
 ```
 
-per avviare il server in modalità debug aggiungere `--debug` prima di `run`; per rendere il server visibile esternamente aggiungere invece `--host=0.0.0.0`; se si intende avviare il server su una porta personalizzata e non utilizzare la porta di default (5000) `--port=3000`
+per avviare il server in modalità debug aggiungere `--debug` prima di `run`; aggiungere dopo `run` per rendere il server visibile esternamente `--host=0.0.0.0`; se si intende avviare il server su una porta personalizzata e non utilizzare la porta di default (5000) `--port=3000`
 
 Si puo anche avviare il server in maniera alternativa eseguendo
 

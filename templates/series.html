@@ -316,7 +316,7 @@ block content%}
           </div>
           <div class="modal-body">
             <form
-              id="podcast-edit-form"
+              id="podcast-edit-form-{{ podcast.id }}"
               action="{{ url_for('edit_podcast', podcast_id=podcast.id) }}"
               method="POST"
               class="mx-auto"
@@ -378,7 +378,7 @@ block content%}
             <button
               type="submit"
               class="btn btn-primary"
-              form="podcast-edit-form"
+              form="podcast-edit-form-{{ podcast.id }}"
               value="update"
             >
               Save

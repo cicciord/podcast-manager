@@ -222,7 +222,8 @@ def edit_series(series_id):
             os.rename("static/images/" + series_edit["title"].lower().replace(" ", "_") + ".jpeg", "static/images/" + add_series["title"].lower().replace(" ", "_") + ".jpeg")
         else:
             image.save("static/images/" + add_series["title"].lower().replace(" ", "_") + ".jpeg")
-            os.remove("static/images/" + series_edit["title"].lower().replace(" ", "_") + ".jpeg")
+            if add_series["title"] != series_edit["title"]: 
+                os.remove("static/images/" + series_edit["title"].lower().replace(" ", "_") + ".jpeg")
         flash("Series successfully updated!", "success")
     else:
         flash("Something went wrong!", "danger")
@@ -389,7 +390,7 @@ def edit_podcast(podcast_id):
     if audio.filename != "":
         if "." not in audio.filename or audio.filename.split(".")[1] != "mp3":
             flash("Wrong file extension...", "warning")
-            return redirect(url_for("new_podcast"))
+            return redirect(request.referrer)
 
     add_podcast["series_id"] = podcast_edit["series_id"]
     add_podcast["id"] = podcast_edit["id"]
@@ -401,7 +402,8 @@ def edit_podcast(podcast_id):
             os.rename("static/audio/" + str(series_pod["id"]) + "/" + podcast_edit["title"].lower().replace(" ", "_") + ".mp3", "static/audio/" + str(series_pod["id"]) + "/" + add_podcast["title"].lower().replace(" ", "_") + ".mp3")
         else:
             audio.save("static/audio/" + str(series_pod["id"]) + "/" + add_podcast["title"].lower().replace(" ", "_") + ".mp3")
-            os.remove("static/audio/" + series_pod["id"] + "/" + podcast_edit["title"].lower().replace(" ", "_") + ".mp3")
+            if podcast_edit["title"] != add_podcast["title"]:
+                os.remove("static/audio/" + series_pod["id"] + "/" + podcast_edit["title"].lower().replace(" ", "_") + ".mp3")
         flash("Podcast successfully updated!", "success")
     else:
         flash("Something went wrong!", "danger")
@@ -596,7 +598,6 @@ def login():
             return redirect(request.referrer)
         else:
             user_obj = User(user_db["id"], user_db["username"], user_db["email"], user_db["password"], user_db["is_creator"])
-            app.logger.debug(user_obj)
             success = login_user(user_obj, True)
 
             if success:
