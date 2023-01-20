@@ -8,10 +8,10 @@ def add_podcast(new_podcast):
     conn.row_factory = sqlite3.Row
     cursor = conn.cursor()
 
-    sql = "INSERT INTO podcasts(title, date, description, series_id) VALUES(?, ?, ?, ?)"
+    sql = "INSERT INTO podcasts(title, date, description, series_id, rnd_seed) VALUES(?, ?, ?, ?, ?)"
     
     try:
-        cursor.execute(sql, (new_podcast["title"], new_podcast["date"], new_podcast["description"], new_podcast["series_id"]))
+        cursor.execute(sql, (new_podcast["title"], new_podcast["date"], new_podcast["description"], new_podcast["series_id"], new_podcast["rnd_seed"]))
         conn.commit()
         success = True
     except Exception as e:
@@ -30,10 +30,9 @@ def update_podcast(new_podcast):
     conn.row_factory = sqlite3.Row
     cursor = conn.cursor()
 
-    sql = "UPDATE podcasts SET title=?, date=?, description=? WHERE id=?"
-    
+    sql = "UPDATE podcasts SET title=?, date=?, description=?, rnd_seed=? WHERE id=?"
     try:
-        cursor.execute(sql, (new_podcast["title"], new_podcast["date"], new_podcast["description"], new_podcast["id"]))
+        cursor.execute(sql, (new_podcast["title"], new_podcast["date"], new_podcast["description"], new_podcast["rnd_seed"], new_podcast["id"]))
         conn.commit()
         success = True
     except Exception as e:

@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for, flash
+from flask import Flask, render_template, request, redirect, url_for, flash, send_from_directory
 from flask_session import Session
 from flask_login import LoginManager, login_user, login_required, current_user, logout_user
 from dao import comments_dao, follows_dao, podcast_dao, series_dao, users_dao
@@ -6,6 +6,7 @@ from models import User
 from datetime import date
 from werkzeug.security import generate_password_hash, check_password_hash
 import os, shutil
+from random import randint
 
 app = Flask(__name__)
 app.secret_key = "Xd5Y1'p(j~'ec{`Ns%Sd7Q/1ICZY$E"
@@ -318,12 +319,13 @@ def new_podcast(series_id):
         return redirect(url_for("new_podcast"))
 
     add_podcast["series_id"] = curr_series["id"]
+    add_podcast["rnd_seed"] = randint(1,10)
 
     # save to db
     success = podcast_dao.add_podcast(add_podcast)
 
     if success:
-        audio.save("static/audio/" + str(curr_series["id"]) + "/" + add_podcast["title"].lower().replace(" ", "_") + ".mp3")
+        audio.save("static/audio/" + str(curr_series["id"]) + "/" + add_podcast["title"].lower().replace(" ", "_") + str(add_podcast["rnd_seed"]) + ".mp3")
         flash("Podcast successfully added!", "success")
     else:
         flash("Something went wrong!", "danger")
@@ -391,19 +393,28 @@ def edit_podcast(podcast_id):
         if "." not in audio.filename or audio.filename.split(".")[1] != "mp3":
             flash("Wrong file extension...", "warning")
             return redirect(request.referrer)
+        if podcast_edit["title"] == add_podcast["title"]:
+            old_seed = podcast_edit["rnd_seed"]
+            new_seed = old_seed
+            while new_seed == old_seed:
+                new_seed = randint(1,10)
+            add_podcast["rnd_seed"] = new_seed
+    else:
+        add_podcast["rnd_seed"] = podcast_edit["rnd_seed"]
 
     add_podcast["series_id"] = podcast_edit["series_id"]
     add_podcast["id"] = podcast_edit["id"]
+
+    app.logger.debug(add_podcast)
 
     success = podcast_dao.update_podcast(add_podcast)
 
     if success:
         if audio.filename == "":
-            os.rename("static/audio/" + str(series_pod["id"]) + "/" + podcast_edit["title"].lower().replace(" ", "_") + ".mp3", "static/audio/" + str(series_pod["id"]) + "/" + add_podcast["title"].lower().replace(" ", "_") + ".mp3")
+            os.rename("static/audio/" + str(series_pod["id"]) + "/" + podcast_edit["title"].lower().replace(" ", "_") + str(podcast_edit["rnd_seed"]) + ".mp3", "static/audio/" + str(series_pod["id"]) + "/" + add_podcast["title"].lower().replace(" ", "_") + str(add_podcast["rnd_seed"]) + ".mp3")
         else:
-            audio.save("static/audio/" + str(series_pod["id"]) + "/" + add_podcast["title"].lower().replace(" ", "_") + ".mp3")
-            if podcast_edit["title"] != add_podcast["title"]:
-                os.remove("static/audio/" + series_pod["id"] + "/" + podcast_edit["title"].lower().replace(" ", "_") + ".mp3")
+            audio.save("static/audio/" + str(series_pod["id"]) + "/" + add_podcast["title"].lower().replace(" ", "_") + str(add_podcast["rnd_seed"]) + ".mp3")
+            os.remove("static/audio/" + str(series_pod["id"]) + "/" + podcast_edit["title"].lower().replace(" ", "_") + str(podcast_edit["rnd_seed"]) + ".mp3")
         flash("Podcast successfully updated!", "success")
     else:
         flash("Something went wrong!", "danger")

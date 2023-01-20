@@ -266,9 +266,10 @@ block content%}
       <div class="mb-3 d-flex justify-content-between align-items-center">
         <audio controls>
           <source
-            src="{{ url_for('static', filename='audio/'+str(podcast.series_id)+'/'+podcast.title.lower().replace(' ', '_')+'.mp3') }}"
+            src="{{ url_for('static', filename='audio/'+str(podcast.series_id)+'/'+podcast.title.lower().replace(' ', '_')+str(podcast.rnd_seed)+'.mp3') }}"
             type="audio/mpeg"
           />
+          Your browser do not support audio tags
         </audio>
         {% if current_user.id == series.creator_id %}
         <div>
