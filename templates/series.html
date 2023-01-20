@@ -1,5 +1,5 @@
-{% extends "base.html" %} {% block title %}{{ series.title }}{% endblock %} {%
-block content%}
+{% extends "base.html" %} {% block title %}{{ series.title | e }}{% endblock %}
+{% block content%}
 <!-- modal form to create a new podcast -->
 <section class="modal" tabindex="-1" id="modal-form">
   <div class="modal-dialog">
@@ -124,7 +124,7 @@ block content%}
               class="form-control"
               name="category"
               aria-describedby="series category"
-              placeholder="{{ series.category }}"
+              placeholder="{{ series.category | e }}"
               minlength="3"
               maxlength="20"
             />
@@ -136,7 +136,7 @@ block content%}
               class="form-control"
               name="date"
               aria-describedby="series creation date"
-              value="{{ series.date }}"
+              value="{{ series.date | e }}"
             />
           </div>
           <div class="mb-3">
@@ -157,7 +157,7 @@ block content%}
               rows="3"
               minlength="100"
               maxlength="400"
-              placeholder="{{ series.text }}"
+              placeholder="{{ series.text | e }}"
             ></textarea>
           </div>
         </form>
@@ -187,16 +187,16 @@ block content%}
     />
     <article class="card-img-overlay">
       <section class="d-flex justify-content-between align-items-center">
-        <h5 class="card-title series-title">{{ series.title }}</h5>
+        <h5 class="card-title series-title">{{ series.title | e }}</h5>
         <h6 class="card-text me-4">
-          {{ get_creator_name(series.creator_id) }}, {{ series.date }}
+          {{ get_creator_name(series.creator_id) | e }}, {{ series.date | e }}
         </h6>
       </section>
       <section>
         <h6 class="card-subtitle text-muted series-subtitle">
-          {{ series.category }}
+          {{ series.category | e }}
         </h6>
-        <p class="card-text series-text mt-3">{{ series.text }}</p>
+        <p class="card-text series-text mt-3">{{ series.text | e }}</p>
         {% if current_user.is_authenticated %} {% if
         is_following(current_user.id, series.id) %}
         <a
@@ -258,10 +258,10 @@ block content%}
       data-podcast
     >
       <div class="d-flex w-100 justify-content-between">
-        <h5 class="mb-1" data-podcast-title>{{ podcast.title }}</h5>
-        <small>{{ podcast.date }}</small>
+        <h5 class="mb-1" data-podcast-title>{{ podcast.title | e }}</h5>
+        <small>{{ podcast.date | e }}</small>
       </div>
-      <p class="mb-1" data-podcast-description>{{ podcast.description }}</p>
+      <p class="mb-1" data-podcast-description>{{ podcast.description | e }}</p>
       {% if current_user.is_authenticated %}
       <div class="mb-3 d-flex justify-content-between align-items-center">
         <audio controls>
@@ -330,7 +330,7 @@ block content%}
                   class="form-control"
                   name="title"
                   aria-describedby="podcast title"
-                  placeholder="{{ podcast.title }}"
+                  placeholder="{{ podcast.title | e }}"
                   minlength="3"
                   maxlength="30"
                 />
@@ -342,7 +342,7 @@ block content%}
                   class="form-control"
                   name="date"
                   aria-describedby="podcast date"
-                  value="{{ podcast.date }}"
+                  value="{{ podcast.date | e }}"
                 />
               </div>
               <div class="mb-3">
@@ -363,7 +363,7 @@ block content%}
                   rows="3"
                   minlength="30"
                   maxlength="150"
-                  placeholder="{{ podcast.description }}"
+                  placeholder="{{ podcast.description | e }}"
                 ></textarea>
               </div>
             </form>
@@ -410,8 +410,10 @@ block content%}
               {% for comment in comments(podcast.id) %}
               <section class="list-group-item">
                 <div class="d-flex w-100 justify-content-between">
-                  <p class="mb-1">{{ get_creator_name(comment.user_id) }}</p>
-                  <small>{{ comment.date }}</small>
+                  <p class="mb-1">
+                    {{ get_creator_name(comment.user_id) | e }}
+                  </p>
+                  <small>{{ comment.date | e }}</small>
                 </div>
                 {% if comment.user_id == current_user.id %}
                 <form
@@ -429,7 +431,7 @@ block content%}
                       minlength="3"
                       maxlength="300"
                     >
-{{ comment.comment }}</textarea
+{{ comment.comment | e }}</textarea
                     >
                   </div>
                 </form>

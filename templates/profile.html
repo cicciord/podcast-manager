@@ -1,14 +1,14 @@
-{% extends "base.html" %} {% block title %}Profile: {{ current_user.username
+{% extends "base.html" %} {% block title %}Profile: {{ current_user.username | e
 }}{% endblock %} {% block content%}
 <main class="col-10 container height-main">
   <section class="mt-5 user-info">
     <h1 class="mb-3 follow-title text-center">User Information</h1>
     <ul class="list-group">
       <li class="list-group-item list-group-item-light">
-        Username: <strong>{{ current_user.username }}</strong>
+        Username: <strong>{{ current_user.username | e }}</strong>
       </li>
       <li class="list-group-item list-group-item-light">
-        Email: <strong>{{ current_user.email }}</strong>
+        Email: <strong>{{ current_user.email | e }}</strong>
       </li>
       <li class="list-group-item list-group-item-light">
         User type:
@@ -35,14 +35,16 @@
         title="series {{ get_series_by_id(follow.series_id).title }} page"
       >
         <div class="d-flex w-100 justify-content-between">
-          <h5 class="mb-1">{{ get_series_by_id(follow.series_id).title }}</h5>
-          <small>{{ get_series_by_id(follow.series_id).date }}</small>
+          <h5 class="mb-1">
+            {{ get_series_by_id(follow.series_id).title | e }}
+          </h5>
+          <small>{{ get_series_by_id(follow.series_id).date | e }}</small>
         </div>
         <p class="mb-1">
-          {{ get_series_by_id(follow.series_id).text[:150]+'...' }}
+          {{ get_series_by_id(follow.series_id).text[:150]+'...' | e }}
         </p>
         <small
-          >{{ get_creator(get_series_by_id(follow.series_id).creator_id)
+          >{{ get_creator(get_series_by_id(follow.series_id).creator_id) | e
           }}</small
         >
       </a>

@@ -59,7 +59,7 @@
       class="container mt-3 alert alert-{{ category }} alert-dismissible fade show"
       role="alert"
     >
-      {{ message }}
+      {{ message | e }}
       <button
         type="button"
         class="btn-close"

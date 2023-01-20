@@ -29,7 +29,7 @@
                     class="nav-link {% if current_category == category.category %}active nav-color-active{% else %}nav-color{% endif %}"
                     href="{{ url_for('home_category', category=category.category) }}"
                     title="select category {{ category.category }}"
-                    >{{ category.category }}</a
+                    >{{ category.category | e }}</a
                   >
                 </li>
                 {% endfor %}
@@ -63,11 +63,11 @@
               alt="series image"
             />
             <section class="card-body">
-              <h5 class="card-title">{{ series.title }}</h5>
+              <h5 class="card-title">{{ series.title | e }}</h5>
               <h6 class="card-subtitle mb-2 text-muted text-muted-series">
-                {{ series.category }}
+                {{ series.category | e }}
               </h6>
-              <p class="card-text">{{ series.text[:90]+'...' }}</p>
+              <p class="card-text">{{ series.text[:90]+'...' | e }}</p>
               <a
                 href="{{ url_for('series', series_id=series.id) }}"
                 class="btn btn-info"
@@ -94,8 +94,10 @@
             <footer
               class="card-footer text-muted text-muted-series d-flex justify-content-between"
             >
-              <p class="card-text">{{ series.date }}</p>
-              <p class="card-text">{{ get_creator_name(series.creator_id) }}</p>
+              <p class="card-text">{{ series.date | e }}</p>
+              <p class="card-text">
+                {{ get_creator_name(series.creator_id) | e }}
+              </p>
             </footer>
           </article>
         </div>
