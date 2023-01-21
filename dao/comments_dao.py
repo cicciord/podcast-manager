@@ -54,7 +54,7 @@ def get_comments(podcast_id):
     conn.row_factory = sqlite3.Row
     cursor = conn.cursor()
 
-    sql = "SELECT * FROM comments WHERE podcast_id = ?"
+    sql = "SELECT * FROM comments WHERE podcast_id = ? ORDER BY date ASC"
     cursor.execute(sql, (podcast_id, ))
 
     res = cursor.fetchall()
