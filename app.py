@@ -27,15 +27,17 @@ def page_not_found(e):
 def home():
     if current_user.is_authenticated:
         series_list = series_dao.get_series(current_user.id)
+        categories = series_dao.get_categories(current_user.id)
     else:
         series_list = series_dao.get_series(0)
-    categories = series_dao.get_categories()
+        categories = series_dao.get_categories(0)
+        
     return render_template("home.html", series_list=series_list, categories=categories, current_category="All", get_creator_name=users_dao.get_user_username_by_id, is_following=follows_dao.is_following)
 
 @app.route("/category/<category>")
 def home_category(category):
     series_list = series_dao.get_series_by_category(category)
-    categories = series_dao.get_categories()
+    categories = series_dao.get_categories(current_user.id)
     return render_template("home.html", series_list=series_list, categories=categories, current_category=category, get_creator_name=users_dao.get_user_username_by_id, is_following=follows_dao.is_following)
 
 @app.route('/series/<int:series_id>')
@@ -100,6 +102,10 @@ def new_series():
         
         if add_series["category"][0] == " ":
             flash("Category cannot start with an empty space...", "warning")
+            return redirect(url_for("new_series"))
+
+        if any(c in special_characters for c in add_series["category"]):
+            flash("Title cannot contain special caracters...", "warning")
             return redirect(url_for("new_series"))
 
         if len(add_series["category"]) > 20:
@@ -198,6 +204,10 @@ def edit_series(series_id):
         
         if add_series["category"][0] == " ":
             flash("Category cannot start with an empty space...", "warning")
+            return redirect(url_for("series", series_id=series_id))
+
+        if any(c in special_characters for c in add_series["category"]):
+            flash("Title cannot contain special caracters...", "warning")
             return redirect(url_for("series", series_id=series_id))
 
         if len(add_series["category"]) > 20:

@@ -144,7 +144,7 @@ main {
 }
 
 .height-main {
-  min-height: calc(100vh - 10rem);
+  min-height: calc(100vh - 13rem);
 }
 
 .form-container {

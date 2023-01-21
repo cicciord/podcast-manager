@@ -46,14 +46,14 @@ def get_series_by_category(category):
     conn.close()
     return res
 
-def get_categories():
+def get_categories(creator_id):
     conn = sqlite3.connect("db/series.db")
     conn.row_factory = sqlite3.Row
     cursor = conn.cursor()
 
-    sql = "SELECT DISTINCT category FROM series WHERE date <= ?"
+    sql = "SELECT DISTINCT category FROM series WHERE date <= ? OR creator_id = ?"
     curr_date = date.today()
-    cursor.execute(sql, (curr_date, ))
+    cursor.execute(sql, (curr_date, creator_id))
 
     res = cursor.fetchall()
 
