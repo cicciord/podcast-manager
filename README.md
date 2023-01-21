@@ -54,3 +54,18 @@ python3 app.py
 ```
 
 Questo comando avvierà il server il modalità debug sulla porta 3000
+
+## Credenziali utenti
+
+Sono presenti già due utenti registrati che potranno essere usati per testare l'applicazione
+
+- Creatore:
+  - email: creator@email.com
+  - password: password_creator
+- Ascoltatore:
+  - email: listener@email.com
+  - password: password_listener
+
+## Materiale di prova
+
+All'interno del progetto è presente una cartella chiamata **_sample_assets_** al cui interno è possibile trovare materiale extra per creare nuovi contenuti

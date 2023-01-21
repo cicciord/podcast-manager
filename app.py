@@ -18,6 +18,11 @@ login_manager = LoginManager()
 login_manager.login_view = "login"
 login_manager.init_app(app)
 
+@app.errorhandler(404)
+def page_not_found(e):
+    flash(e, "danger")
+    return redirect(url_for("home"))
+
 @app.route("/")
 def home():
     if current_user.is_authenticated:
