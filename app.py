@@ -168,7 +168,7 @@ def edit_series(series_id):
     else:
         titles = series_dao.get_series_titles()
         for title in titles:
-            if title["title"].lower() == add_series["title"].lower():
+            if title["title"] == add_series["title"]:
                 flash("This title has already been used, please choose a different one...", "warning")
                 return redirect(request.referrer)
 
@@ -238,7 +238,7 @@ def edit_series(series_id):
             os.rename("static/images/" + series_edit["title"].lower().replace(" ", "_").replace("'", "_") + ".jpeg", "static/images/" + add_series["title"].lower().replace(" ", "_").replace("'", "_") + ".jpeg")
         else:
             image.save("static/images/" + add_series["title"].lower().replace(" ", "_").replace("'", "_") + ".jpeg")
-            if add_series["title"] != series_edit["title"]: 
+            if add_series["title"].lower() != series_edit["title"].lower(): 
                 os.remove("static/images/" + series_edit["title"].lower().replace(" ", "_").replace("'", "_") + ".jpeg")
         flash("Series successfully updated!", "success")
     else:
@@ -377,6 +377,12 @@ def edit_podcast(podcast_id):
     if add_podcast["title"] == "":
         add_podcast["title"] = podcast_edit["title"]
     else:
+        titles = podcast_dao.get_podcasts_titles(series_id)
+        for title in titles:
+            if title["title"] == add_podcast["title"]:
+                flash("This title has already been used, please choose a different one...", "warning")
+                return redirect(request.referrer)
+                
         if len(add_podcast["title"]) < 3:
             flash("Title is too short...", "warning")
             return redirect(url_for("series", series_id=series_id))
@@ -418,7 +424,7 @@ def edit_podcast(podcast_id):
         if "." not in audio.filename or audio.filename.split(".")[1] != "mp3":
             flash("Wrong file extension...", "warning")
             return redirect(request.referrer)
-        if podcast_edit["title"] == add_podcast["title"]:
+        if podcast_edit["title"].lower() == add_podcast["title"].lower():
             old_seed = podcast_edit["rnd_seed"]
             new_seed = old_seed
             while new_seed == old_seed:
@@ -429,8 +435,6 @@ def edit_podcast(podcast_id):
 
     add_podcast["series_id"] = podcast_edit["series_id"]
     add_podcast["id"] = podcast_edit["id"]
-
-    app.logger.debug(add_podcast)
 
     success = podcast_dao.update_podcast(add_podcast)
 
