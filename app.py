@@ -36,8 +36,12 @@ def home():
 
 @app.route("/category/<category>")
 def home_category(category):
-    series_list = series_dao.get_series_by_category(category)
-    categories = series_dao.get_categories(current_user.id)
+    if current_user.is_authenticated:
+        series_list = series_dao.get_series_by_category(category, current_user.id)
+        categories = series_dao.get_categories(current_user.id)
+    else:
+        series_list = series_dao.get_series_by_category(category, 0)
+        categories = series_dao.get_categories(0)
     return render_template("home.html", series_list=series_list, categories=categories, current_category=category, get_creator_name=users_dao.get_user_username_by_id, is_following=follows_dao.is_following)
 
 @app.route('/series/<int:series_id>')

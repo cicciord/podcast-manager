@@ -31,14 +31,14 @@ def get_series_titles():
     conn.close()
     return res
 
-def get_series_by_category(category):
+def get_series_by_category(category, creator_id):
     conn = sqlite3.connect("db/series.db")
     conn.row_factory = sqlite3.Row
     cursor = conn.cursor()
 
-    sql = "SELECT * FROM series WHERE category = ? AND date <= ? ORDER BY date DESC"
+    sql = "SELECT * FROM series WHERE category = ? AND (date <= ? OR creator_id = ?) ORDER BY date DESC"
     curr_date = date.today()
-    cursor.execute(sql, (category, curr_date))
+    cursor.execute(sql, (category, curr_date, creator_id))
 
     res = cursor.fetchall()
 
