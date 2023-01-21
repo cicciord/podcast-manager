@@ -85,6 +85,11 @@ def new_series():
             flash("Title cannot start with an empty space...", "warning")
             return redirect(url_for("new_series"))
 
+        special_characters = '"!@#$%^&*()-+?_=,<>/"'
+        if any(c in special_characters for c in add_series["title"]):
+            flash("Title cannot contain special caracters...", "warning")
+            return redirect(url_for("new_series"))
+
         if len(add_series["title"]) > 30:
             flash("Title is too long...", "warning")
             return redirect(url_for("new_series"))
@@ -133,7 +138,7 @@ def new_series():
         (success, id) = series_dao.add_series(add_series)
 
         if success:
-            image.save("static/images/" + add_series["title"].lower().replace(" ", "_") + ".jpeg")
+            image.save("static/images/" + add_series["title"].lower().replace(" ", "_").replace("'", "_") + ".jpeg")
             os.mkdir("static/audio/" + str(id))
             flash("Series successfully created!", "success")
         else:
@@ -173,6 +178,11 @@ def edit_series(series_id):
         
         if add_series["title"][0] == " ":
             flash("Title cannot start with an empty space...", "warning")
+            return redirect(url_for("series", series_id=series_id))
+        
+        special_characters = '"!@#$%^&*()-+?_=,<>/"'
+        if any(c in special_characters for c in add_series["title"]):
+            flash("Title cannot contain special caracters...", "warning")
             return redirect(url_for("series", series_id=series_id))
 
         if len(add_series["title"]) > 30:
@@ -225,11 +235,11 @@ def edit_series(series_id):
 
     if success:
         if image.filename == "":
-            os.rename("static/images/" + series_edit["title"].lower().replace(" ", "_") + ".jpeg", "static/images/" + add_series["title"].lower().replace(" ", "_") + ".jpeg")
+            os.rename("static/images/" + series_edit["title"].lower().replace(" ", "_").replace("'", "_") + ".jpeg", "static/images/" + add_series["title"].lower().replace(" ", "_").replace("'", "_") + ".jpeg")
         else:
-            image.save("static/images/" + add_series["title"].lower().replace(" ", "_") + ".jpeg")
+            image.save("static/images/" + add_series["title"].lower().replace(" ", "_").replace("'", "_") + ".jpeg")
             if add_series["title"] != series_edit["title"]: 
-                os.remove("static/images/" + series_edit["title"].lower().replace(" ", "_") + ".jpeg")
+                os.remove("static/images/" + series_edit["title"].lower().replace(" ", "_").replace("'", "_") + ".jpeg")
         flash("Series successfully updated!", "success")
     else:
         flash("Something went wrong!", "danger")
@@ -257,7 +267,7 @@ def delete_series(series_id):
         return redirect(request.referrer)
     
     # remove files from filesystem
-    os.remove("static/images/" + del_series["title"].lower().replace(" ", "_") + ".jpeg")
+    os.remove("static/images/" + del_series["title"].lower().replace(" ", "_").replace("'", "_") + ".jpeg")
     shutil.rmtree("static/audio/" + str(del_series["id"]))
     
     flash("Series deleted correctly!", "success")
@@ -293,6 +303,11 @@ def new_podcast(series_id):
     
     if add_podcast["title"][0] == " ":
         flash("Title cannot start with an empty space...", "warning")
+        return redirect(url_for("series", series_id=series_id))
+    
+    special_characters = '"!@#$%^&*()-+?_=,<>/"'
+    if any(c in special_characters for c in add_podcast["title"]):
+        flash("Title cannot contain special caracters...", "warning")
         return redirect(url_for("series", series_id=series_id))
 
     if len(add_podcast["title"]) > 30:
@@ -330,7 +345,7 @@ def new_podcast(series_id):
     success = podcast_dao.add_podcast(add_podcast)
 
     if success:
-        audio.save("static/audio/" + str(curr_series["id"]) + "/" + add_podcast["title"].lower().replace(" ", "_") + str(add_podcast["rnd_seed"]) + ".mp3")
+        audio.save("static/audio/" + str(curr_series["id"]) + "/" + add_podcast["title"].lower().replace(" ", "_").replace("'", "_") + str(add_podcast["rnd_seed"]) + ".mp3")
         flash("Podcast successfully added!", "success")
     else:
         flash("Something went wrong!", "danger")
@@ -368,6 +383,11 @@ def edit_podcast(podcast_id):
         
         if add_podcast["title"][0] == " ":
             flash("Title cannot start with an empty space...", "warning")
+            return redirect(url_for("series", series_id=series_id))
+
+        special_characters = '"!@#$%^&*()-+?_=,<>/"'
+        if any(c in special_characters for c in add_podcast["title"]):
+            flash("Title cannot contain special caracters...", "warning")
             return redirect(url_for("series", series_id=series_id))
 
         if len(add_podcast["title"]) > 30:
@@ -416,10 +436,10 @@ def edit_podcast(podcast_id):
 
     if success:
         if audio.filename == "":
-            os.rename("static/audio/" + str(series_pod["id"]) + "/" + podcast_edit["title"].lower().replace(" ", "_") + str(podcast_edit["rnd_seed"]) + ".mp3", "static/audio/" + str(series_pod["id"]) + "/" + add_podcast["title"].lower().replace(" ", "_") + str(add_podcast["rnd_seed"]) + ".mp3")
+            os.rename("static/audio/" + str(series_pod["id"]) + "/" + podcast_edit["title"].lower().replace(" ", "_").replace("'", "_") + str(podcast_edit["rnd_seed"]) + ".mp3", "static/audio/" + str(series_pod["id"]) + "/" + add_podcast["title"].lower().replace(" ", "_").replace("'", "_") + str(add_podcast["rnd_seed"]) + ".mp3")
         else:
-            audio.save("static/audio/" + str(series_pod["id"]) + "/" + add_podcast["title"].lower().replace(" ", "_") + str(add_podcast["rnd_seed"]) + ".mp3")
-            os.remove("static/audio/" + str(series_pod["id"]) + "/" + podcast_edit["title"].lower().replace(" ", "_") + str(podcast_edit["rnd_seed"]) + ".mp3")
+            audio.save("static/audio/" + str(series_pod["id"]) + "/" + add_podcast["title"].lower().replace(" ", "_").replace("'", "_") + str(add_podcast["rnd_seed"]) + ".mp3")
+            os.remove("static/audio/" + str(series_pod["id"]) + "/" + podcast_edit["title"].lower().replace(" ", "_").replace("'", "_") + str(podcast_edit["rnd_seed"]) + ".mp3")
         flash("Podcast successfully updated!", "success")
     else:
         flash("Something went wrong!", "danger")
@@ -447,7 +467,7 @@ def delete_podcast(podcast_id):
         flash("Something went wrong...", "danger")
         return redirect(request.referrer)
     
-    os.remove("static/audio/" + str(podcast_series["id"]) + "/" + del_podcast["title"].lower().replace(" ", "_") + str(del_podcast["rnd_seed"]) + ".mp3")
+    os.remove("static/audio/" + str(podcast_series["id"]) + "/" + del_podcast["title"].lower().replace(" ", "_").replace("'", "_") + str(del_podcast["rnd_seed"]) + ".mp3")
     
     flash("Podcast deleted correctly!", "success")
     return redirect(url_for("series", series_id=podcast_series["id"]))

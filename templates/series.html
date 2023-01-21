@@ -183,7 +183,7 @@
 <main class="col-12 container height-main">
   <div class="card text-bg-dark mt-5">
     <img
-      src="{{ url_for('static', filename='images/'+series.title.lower().replace(' ', '_')+'.jpeg') }}"
+      src="{{ url_for('static', filename='images/'+series.title.lower().replace(' ', '_').replace('\'', '_')+'.jpeg') }}"
       class="card-img series-img-bg"
       alt="series image"
     />
@@ -268,7 +268,7 @@
       <div class="mb-3 d-flex justify-content-between align-items-center">
         <audio controls>
           <source
-            src="{{ url_for('static', filename='audio/'+str(podcast.series_id)+'/'+podcast.title.lower().replace(' ', '_')+str(podcast.rnd_seed)+'.mp3') }}"
+            src="{{ url_for('static', filename='audio/'+str(podcast.series_id)+'/'+podcast.title.lower().replace(' ', '_').replace('\'', '_')+str(podcast.rnd_seed)+'.mp3') }}"
             type="audio/mpeg"
           />
           Your browser do not support audio tags

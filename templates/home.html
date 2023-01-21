@@ -58,7 +58,7 @@
         <div class="col">
           <article class="card">
             <img
-              src="{{ url_for('static', filename='images/'+series.title.lower().replace(' ', '_')+'.jpeg') }}"
+              src="{{ url_for('static', filename='images/'+series.title.lower().replace(' ', '_').replace('\'', '_')+'.jpeg') }}"
               class="series-image card-img-top"
               alt="series image"
             />
