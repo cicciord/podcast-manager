@@ -447,7 +447,7 @@ def delete_podcast(podcast_id):
         flash("Something went wrong...", "danger")
         return redirect(request.referrer)
     
-    os.remove("static/audio/" + str(podcast_series["id"]) + "/" + del_podcast["title"].lower().replace(" ", "_") + ".mp3")
+    os.remove("static/audio/" + str(podcast_series["id"]) + "/" + del_podcast["title"].lower().replace(" ", "_") + str(del_podcast["rnd_seed"]) + ".mp3")
     
     flash("Podcast deleted correctly!", "success")
     return redirect(url_for("series", series_id=podcast_series["id"]))
