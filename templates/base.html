@@ -19,7 +19,7 @@
       rel="stylesheet"
       href="{{ url_for('static', filename='style.css') }}"
     />
-    <script defer src="{{ url_for('static', filename='app.js') }}"></script>
+    {% block script %}{% endblock %}
   </head>
   <body>
     <header>
